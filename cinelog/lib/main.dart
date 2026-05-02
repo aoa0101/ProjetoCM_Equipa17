@@ -1,27 +1,36 @@
-import 'package:cinelog/main_screen.dart';
-import 'package:cinelog/options.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-//Color backgroundColor = ;
+import 'main_screen.dart';
+import 'options.dart';
+import 'splash_screen.dart';
+
 void main() {
   runApp(const MainApp());
 }
 
 final GoRouter _router = GoRouter(
+  initialLocation: '/splash',
   routes: <RouteBase>[
     GoRoute(
+      path: '/splash',
+      builder: (BuildContext context, GoRouterState state) {
+        return const SplashScreen();
+      },
+    ),
+    GoRoute(
       path: '/',
-      builder:(BuildContext context, GoRouterState state) {
-        return MainScreenWidget();
+      builder: (BuildContext context, GoRouterState state) {
+        return const MainScreenWidget();
       },
       routes: <RouteBase>[
         GoRoute(
           path: "options",
           builder: (BuildContext context, GoRouterState state) {
-            return OptionsScreenWidget();
-          },)
-        ]
+            return const OptionsScreenWidget();
+          },
+        )
+      ]
     )
   ]
 );
@@ -31,6 +40,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(routerConfig: _router);
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: _router,
+    );
   }
 }
