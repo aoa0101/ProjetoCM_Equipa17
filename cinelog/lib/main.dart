@@ -6,6 +6,7 @@ import 'main_screen.dart';
 import 'options.dart';
 import 'splash_screen.dart';
 import 'profile_screen.dart';
+import 'search_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -19,6 +20,10 @@ final GoRouter _router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         return const SplashScreen();
       },
+    ),
+    GoRoute(
+      path: '/search',
+      builder: (context, state) => const SearchScreen(),
     ),
     GoRoute(
       path: '/',

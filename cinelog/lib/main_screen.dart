@@ -28,6 +28,7 @@ class MainScreenWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 icon: Icon(Icons.search),
                 onPressed: () {
+                  context.push('/search');
                 },
               ),
             ),
