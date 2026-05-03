@@ -1,3 +1,4 @@
+import 'package:cinelog/movie_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'color_scheme.dart';
@@ -47,19 +48,21 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
               
-              const SizedBox(height: 20),
-              Center(
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 10,
-                runSpacing: 10,
-                children: [
-                  _buildFilterChip("Género"),
-                  _buildFilterChip("Ano"),
-                  _buildFilterChip("Idioma"),
-                  _buildFilterChip("Classificação Etária"),
-                  _buildFilterChip("Rating"),
-                  ],
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Center(
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    _buildFilterChip("Género"),
+                    _buildFilterChip("Ano"),
+                    _buildFilterChip("Idioma"),
+                    _buildFilterChip("Classificação Etária"),
+                    _buildFilterChip("Rating"),
+                    ],
+                  ),
                 ),
               ),
 
@@ -83,7 +86,7 @@ class SearchScreen extends StatelessWidget {
                 ),
                 itemCount: 10,
                 itemBuilder: (context, index) {
-                  return _buildMovieCard();
+                  return MovieCard();
                 },
               ),
               
@@ -111,55 +114,6 @@ class SearchScreen extends StatelessWidget {
           ),
           const SizedBox(width: 6),
           const Icon(Icons.keyboard_arrow_down, color: Colors.white54, size: 18),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMovieCard() {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFEBEBEB),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Stack(
-        children: [
-          const Center(
-            child: Icon(Icons.category, size: 60, color: Colors.black12),
-          ),
-          
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 60,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(8)),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    SECONDARY_COLOR.withValues(alpha: 0.8),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          
-          const Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Text(
-                "Title",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );

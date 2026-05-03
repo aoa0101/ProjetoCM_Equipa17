@@ -1,5 +1,6 @@
 import 'package:cinelog/color_scheme.dart';
 import 'package:cinelog/login_screen.dart';
+import 'package:cinelog/movie_page.dart';
 import 'package:cinelog/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -17,48 +18,21 @@ void main() {
 final GoRouter _router = GoRouter(
   initialLocation: '/splash',
   routes: <RouteBase>[
-    GoRoute(
-      path: '/splash',
-      builder: (BuildContext context, GoRouterState state) {
-        return const SplashScreen();
-      },
+    GoRoute(path: '/splash', builder: (BuildContext context, GoRouterState state) => const SplashScreen()),
+
+    GoRoute(path: '/login', builder: (context, state) => const LoginScreen(),
+     routes: <RouteBase>[
+        GoRoute(path: 'register', builder: (context, state) => const RegisterScreen()), 
+     ]
     ),
-    GoRoute(path:   '/login', builder: (context, state) => const LoginScreen()),  
-    GoRoute(path: '/register', builder: (context, state) => const RegisterScreen()), 
-    GoRoute(
-      path: '/search',
-      builder: (context, state) => const SearchScreen(),
-    ),
-    GoRoute(
-      path: '/',
-      builder: (BuildContext context, GoRouterState state) {
-        return const MainScreenWidget();
-      },
+
+    GoRoute(path: '/', builder: (BuildContext context, GoRouterState state) => const MainScreenWidget(),
       routes: <RouteBase>[
-        GoRoute(
-          path: "options",
-          /*
-          pageBuilder:(context, state) {
-            return CustomTransitionPage(
-              child: const OptionsScreenWidget(), 
-              transitionsBuilder:(context, animation, secondaryAnimation, child) {
-                return FadeTransition(
-                  opacity: CurveTween(curve: Curves.bounceIn).animate(animation),
-                  child: child,
-                );
-              },
-            );
-          },
-          */
-          builder: (BuildContext context, GoRouterState state) {
-            return const OptionsScreenWidget();
-          },
-        )
+        GoRoute(path: 'search', builder: (context, state) => const SearchScreen()),
+        GoRoute(path: "options", builder: (BuildContext context, GoRouterState state) => const OptionsScreenWidget()),
+        GoRoute(path: 'profile', builder: (context, state) => const ProfileScreen()),
+        GoRoute(path: 'movie', builder: (context, state) => const MoviePage()),
       ]
-    ),
-    GoRoute(
-      path: '/profile',
-      builder: (context, state) => const ProfileScreen(),
     ),
   ]
 );

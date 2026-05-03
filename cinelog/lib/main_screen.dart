@@ -1,3 +1,4 @@
+import 'package:cinelog/movie_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'color_scheme.dart';
@@ -50,7 +51,21 @@ class MainScreenWidget extends StatelessWidget {
           const SizedBox(width: 8),
         ],
       ),
-      body: Container(), 
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, 
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 25,
+              childAspectRatio: 0.75, 
+            ),
+            itemCount: 10,
+            itemBuilder:(context, index) {
+              return MovieCard();
+            }, 
+          ),
+      ),
     );
   }
 }

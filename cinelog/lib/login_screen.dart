@@ -71,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      context.go('/register');
+                      context.go('/login/register');
                     },
                     child: const Text("Registar"),
                   ),

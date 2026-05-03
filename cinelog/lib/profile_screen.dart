@@ -19,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
         actions: [
           Icon(Icons.notifications_none, color: SECONDARY_COLOR),
           const SizedBox(width: 15),
-          Icon(Icons.account_circle, color: Colors.white, size: 30),
+          Icon(Icons.account_circle, color: SECONDARY_COLOR, size: 30),
           const SizedBox(width: 15),
           IconButton(
             icon: Icon(Icons.settings, color: SECONDARY_COLOR),
