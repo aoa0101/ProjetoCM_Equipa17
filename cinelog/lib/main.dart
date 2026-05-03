@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'main_screen.dart';
 import 'options.dart';
 import 'splash_screen.dart';
+import 'profile_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -45,7 +46,11 @@ final GoRouter _router = GoRouter(
           },
         )
       ]
-    )
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
+    ),
   ]
 );
 

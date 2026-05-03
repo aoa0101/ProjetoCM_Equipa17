@@ -18,8 +18,8 @@ class MainScreenWidget extends StatelessWidget {
             Transform.translate(
               offset: const Offset(-15, 0),
               child: Transform.scale(
-                scale: 1.5,
-                child: Image.asset("lib/images/cinelog_logo.png", width: 100),
+                scale: 1.0,
+                child: Image.asset("lib/images/cinelog_logo.png", width: 50),
               ),
             ),
             Transform.translate(
@@ -39,12 +39,12 @@ class MainScreenWidget extends StatelessWidget {
               onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {},
-          ),
-          IconButton(
             icon: Icon(Icons.settings),
             onPressed: () => context.go('/options'),
+          ),
+          IconButton(
+            icon: Icon(Icons.account_circle, color: SECONDARY_COLOR),
+            onPressed: () => context.go('/profile'),
           ),
           const SizedBox(width: 8),
         ],
