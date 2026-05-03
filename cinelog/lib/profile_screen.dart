@@ -100,6 +100,41 @@ class ProfileScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 30),
+
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Os meus favoritos",
+                  style: TextStyle(color: SECONDARY_COLOR, fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              
+              const SizedBox(height: 15),
+              
+              SizedBox(
+                height: 180,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: Container(
+                        width: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.white12,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Icon(Icons.movie_creation_outlined, color: Colors.white24, size: 40),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 40),
             ],
           ),
         ),
