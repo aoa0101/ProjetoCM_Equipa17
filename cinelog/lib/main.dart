@@ -1,3 +1,4 @@
+import 'package:cinelog/color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,6 +27,19 @@ final GoRouter _router = GoRouter(
       routes: <RouteBase>[
         GoRoute(
           path: "options",
+          /*
+          pageBuilder:(context, state) {
+            return CustomTransitionPage(
+              child: const OptionsScreenWidget(), 
+              transitionsBuilder:(context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: CurveTween(curve: Curves.bounceIn).animate(animation),
+                  child: child,
+                );
+              },
+            );
+          },
+          */
           builder: (BuildContext context, GoRouterState state) {
             return const OptionsScreenWidget();
           },
