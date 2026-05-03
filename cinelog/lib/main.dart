@@ -1,4 +1,6 @@
 import 'package:cinelog/color_scheme.dart';
+import 'package:cinelog/login_screen.dart';
+import 'package:cinelog/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,6 +23,8 @@ final GoRouter _router = GoRouter(
         return const SplashScreen();
       },
     ),
+    GoRoute(path:   '/login', builder: (context, state) => const LoginScreen()),  
+    GoRoute(path: '/register', builder: (context, state) => const RegisterScreen()), 
     GoRoute(
       path: '/search',
       builder: (context, state) => const SearchScreen(),

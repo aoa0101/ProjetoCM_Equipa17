@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     
     if (!mounted) return;
 
-    context.go('/'); 
+    context.go('/login'); 
   }
 
   @override
