@@ -1,3 +1,4 @@
+import 'package:cinelog/main_app_screens/movie_widgets/movie_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cinelog/color_scheme.dart';
@@ -7,9 +8,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2, 
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: PRIMARY_COLOR,
         appBar: AppBar(
           backgroundColor: APPBAR_BACKGROUND_COLOR,
@@ -30,6 +29,8 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
         body: SingleChildScrollView(
+          child:DefaultTabController(
+          length: 2,  
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Column(
@@ -95,29 +96,26 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     _buildPreferenceCircle("80%", "Comédia"),
                     _buildPreferenceCircle("60%", "Terror"),
-                    _buildPreferenceCircle("20%", "Thriller"),
                     _buildPreferenceCircle("50%", "Romance"),
+                    _buildPreferenceCircle("20%", "Thriller"),
                   ],
                 ),
 
                 const SizedBox(height: 30),
                 
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TabBar(
-                    isScrollable: true,
-                    tabAlignment: TabAlignment.start,
-                    dividerColor: Colors.transparent,
-                    indicatorColor: SECONDARY_COLOR,
-                    labelColor: SECONDARY_COLOR,
-                    unselectedLabelColor: Colors.white54,
-                    tabs: const [
-                      Tab(text: "Favoritos"),
-                      Tab(text: "Assistidos"),
-                    ],
-                  ),
+                TabBar(
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.start,
+                  dividerColor: Colors.transparent,
+                  indicatorColor: SECONDARY_COLOR,
+                  labelColor: SECONDARY_COLOR,
+                  unselectedLabelColor: Colors.white54,
+                  tabs: const [
+                    Tab(text: "Favoritos"),
+                    Tab(text: "Assistidos"),
+                  ],
                 ),
-                
+  
                 const SizedBox(height: 15),
                 
                 SizedBox(
@@ -135,7 +133,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      )
     );
   }
 
@@ -180,7 +178,7 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildMovieList() {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-      itemCount: 5,
+      itemCount: 10,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(right: 16.0),

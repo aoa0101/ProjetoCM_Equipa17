@@ -1,7 +1,6 @@
+import 'package:cinelog/main_app_screens/movie_widgets/movie_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:cinelog/main_app_screens/movie_card.dart';
 import 'package:cinelog/color_scheme.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -79,20 +78,7 @@ class SearchScreen extends StatelessWidget {
 
               const SizedBox(height: 15),
 
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, 
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 0.75, 
-                ),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return const MovieCard();
-                },
-              ),
+              MovieGrid(neverScrollable: true,),
               
               const SizedBox(height: 30),
             ],

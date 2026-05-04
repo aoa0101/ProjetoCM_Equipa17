@@ -1,8 +1,7 @@
+import 'package:cinelog/main_app_screens/movie_widgets/movie_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:cinelog/color_scheme.dart';
-import 'package:cinelog/main_app_screens/movie_card.dart';
 
 class WatchlistScreen extends StatelessWidget {
   const WatchlistScreen({super.key});
@@ -36,18 +35,7 @@ class WatchlistScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, 
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 25,
-            childAspectRatio: 0.75, 
-          ),
-          itemCount: 6,
-          itemBuilder: (context, index) {
-            return const MovieCard();
-          }, 
-        ),
+        child: MovieGrid()
       ),
     );
   }

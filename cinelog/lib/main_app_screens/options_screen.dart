@@ -20,11 +20,11 @@ class OptionsScreenWidget extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 142),
-              _makeOptionButton(Icons.person, "Account"),
-              _makeOptionButton(Icons.notifications_none, "Notifications"),
-              _makeOptionButton(Icons.lock, "Privacy"),
-              _makeOptionButton(Icons.format_color_fill, "Appearence"),
-              _makeOptionButton(null, "About Us", customWidth: 160),
+              _makeOptionButton(Icons.person, "Conta"),
+              _makeOptionButton(Icons.notifications_none, "Notificações"),
+              _makeOptionButton(Icons.lock, "Privacidade"),
+              _makeOptionButton(Icons.format_color_fill, "Aparência"),
+              _makeOptionButton(null, "Sobre nós", customWidth: 160),
             ],
           ),
         ),
