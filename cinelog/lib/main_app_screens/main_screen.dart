@@ -1,7 +1,9 @@
-import 'package:cinelog/movie_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'color_scheme.dart';
+
+import 'package:cinelog/color_scheme.dart';
+
+import 'package:cinelog/main_app_screens/movie_card.dart';
 
 class MainScreenWidget extends StatelessWidget {
   const MainScreenWidget({super.key});

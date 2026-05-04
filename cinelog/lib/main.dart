@@ -1,15 +1,16 @@
-import 'package:cinelog/color_scheme.dart';
-import 'package:cinelog/login_screen.dart';
-import 'package:cinelog/movie_page.dart';
-import 'package:cinelog/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'main_screen.dart';
-import 'options.dart';
-import 'splash_screen.dart';
-import 'profile_screen.dart';
-import 'search_screen.dart';
+import 'package:cinelog/splash_screen/splash_screen.dart';
+
+import 'package:cinelog/user_authentication_screens/register_screen.dart';
+import 'package:cinelog/user_authentication_screens/login_screen.dart';
+
+import 'package:cinelog/main_app_screens/movie_page.dart';
+import 'package:cinelog/main_app_screens/main_screen.dart';
+import 'package:cinelog/main_app_screens/options_screen.dart';
+import 'package:cinelog/main_app_screens/profile_screen.dart';
+import 'package:cinelog/main_app_screens/search_screen.dart';
 
 void main() {
   runApp(const MainApp());

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'color_scheme.dart';
+
+import 'package:cinelog/color_scheme.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

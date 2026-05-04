@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'color_scheme.dart'; // Importem aqui as vossas cores
+
+import 'package:cinelog/color_scheme.dart';
 
 class OptionsScreenWidget extends StatelessWidget {
   const OptionsScreenWidget({super.key});
@@ -19,11 +20,11 @@ class OptionsScreenWidget extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 142),
-              MakeOptionButton(Icons.person, "Account"),
-              MakeOptionButton(Icons.notifications_none, "Notifications"),
-              MakeOptionButton(Icons.lock, "Privacy"),
-              MakeOptionButton(Icons.format_color_fill, "Appearence"),
-              MakeOptionButton(null, "About Us", customWidth: 160),
+              _makeOptionButton(Icons.person, "Account"),
+              _makeOptionButton(Icons.notifications_none, "Notifications"),
+              _makeOptionButton(Icons.lock, "Privacy"),
+              _makeOptionButton(Icons.format_color_fill, "Appearence"),
+              _makeOptionButton(null, "About Us", customWidth: 160),
             ],
           ),
         ),
@@ -31,7 +32,7 @@ class OptionsScreenWidget extends StatelessWidget {
     );
   }
 
-  Widget MakeOptionButton(IconData? icon, String buttonText, {double customWidth = double.infinity}) {
+  Widget _makeOptionButton(IconData? icon, String buttonText, {double customWidth = double.infinity}) {
     return Padding(
       padding: const EdgeInsets.all(9.0),
       child: SizedBox(

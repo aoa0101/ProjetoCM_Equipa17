@@ -1,7 +1,8 @@
-import 'package:cinelog/movie_card.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'color_scheme.dart';
+
+import 'package:cinelog/main_app_screens/movie_card.dart';
+
+import 'package:cinelog/color_scheme.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -13,10 +14,7 @@ class SearchScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: APPBAR_BACKGROUND_COLOR,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: SECONDARY_COLOR),
-          onPressed: () => context.pop(), 
-        ),
+        iconTheme: IconThemeData(color: SECONDARY_COLOR),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
