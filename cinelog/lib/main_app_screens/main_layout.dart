@@ -38,8 +38,8 @@ class MainLayout extends StatelessWidget {
               label: 'Pesquisa',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark_border),
-              activeIcon: Icon(Icons.bookmark),
+              icon: Icon(Icons.watch_later_outlined),
+              activeIcon: Icon(Icons.watch_later),
               label: 'Watchlist',
             ),
             BottomNavigationBarItem(

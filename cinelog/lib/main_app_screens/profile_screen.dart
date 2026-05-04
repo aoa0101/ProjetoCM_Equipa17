@@ -1,3 +1,4 @@
+import 'package:cinelog/main_app_screens/logo_app_bar.dart';
 import 'package:cinelog/main_app_screens/movie_widgets/movie_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -10,24 +11,8 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: PRIMARY_COLOR,
-        appBar: AppBar(
-          backgroundColor: APPBAR_BACKGROUND_COLOR,
-          elevation: 0,
-          // 1. Removemos o 'leading' (a seta de voltar)
-          title: Image.asset("lib/images/cinelog_logo.png", width: 50),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.notifications_none, color: SECONDARY_COLOR),
-              onPressed: () {},
-            ),
-            // 2. Removemos o Icon do account_circle que estava aqui
-            IconButton(
-              icon: Icon(Icons.settings, color: SECONDARY_COLOR),
-              onPressed: () => context.push('/options'),
-            ),
-            const SizedBox(width: 10),
-          ],
-        ),
+        appBar: LogoAppBar(),
+        
         body: SingleChildScrollView(
           child:DefaultTabController(
           length: 2,  

@@ -13,7 +13,7 @@ class MovieCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
     child: Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFEBEBEB),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Stack(

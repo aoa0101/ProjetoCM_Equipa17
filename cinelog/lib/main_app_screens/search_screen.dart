@@ -1,3 +1,4 @@
+import 'package:cinelog/main_app_screens/logo_app_bar.dart';
 import 'package:cinelog/main_app_screens/movie_widgets/movie_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -10,23 +11,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
-      appBar: AppBar(
-        backgroundColor: APPBAR_BACKGROUND_COLOR,
-        elevation: 0,
-        iconTheme: IconThemeData(color: SECONDARY_COLOR),
-        title: Image.asset("lib/images/cinelog_logo.png", width: 50),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications_none, color: SECONDARY_COLOR),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.settings, color: SECONDARY_COLOR),
-            onPressed: () => context.push('/options'),
-          ),
-          const SizedBox(width: 10),
-        ],
-      ),
+      appBar: LogoAppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
