@@ -63,7 +63,7 @@ class MoviePage extends StatelessWidget {
                     top: 10,
                     left: 10,
                     child: CircleAvatar(
-                      backgroundColor: APPBAR_BACKGROUND_COLOR.withOpacity(0.7),
+                      backgroundColor: APPBAR_BACKGROUND_COLOR.withValues(alpha: 0.7),
                       child: IconButton(
                         icon: Icon(Icons.arrow_back, color: SECONDARY_COLOR),
                         onPressed: () {
@@ -276,9 +276,10 @@ class ActionButton extends StatelessWidget {
    
    @override Widget build(BuildContext context) { 
     return Column( children: [ 
-      CircleAvatar( 
-        backgroundColor: Colors.white10, 
-        child: Icon(icon, color: SECONDARY_COLOR), 
+      IconButton(
+        onPressed: () => {},
+        style: IconButton.styleFrom(backgroundColor:  Colors.white10), 
+        icon: Icon(icon, color: SECONDARY_COLOR), 
         ), 
         const SizedBox(height: 5), 
         Text(label, style: const TextStyle(color: Colors.white70)), 
