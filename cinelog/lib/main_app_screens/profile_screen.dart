@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:cinelog/color_scheme.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -8,135 +7,137 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: PRIMARY_COLOR,
-      appBar: AppBar(
-        backgroundColor: APPBAR_BACKGROUND_COLOR,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: SECONDARY_COLOR),
-          onPressed: () => context.go('/'),
-        ),
-        title: Image.asset("lib/images/cinelog_logo.png", width: 50),
-        actions: [
-          Icon(Icons.notifications_none, color: SECONDARY_COLOR),
-          const SizedBox(width: 15),
-          Icon(Icons.account_circle, color: SECONDARY_COLOR, size: 30),
-          const SizedBox(width: 15),
-          IconButton(
-            icon: Icon(Icons.settings, color: SECONDARY_COLOR),
-            onPressed: () => context.go('/options'),
+    return DefaultTabController(
+      length: 3, 
+      child: Scaffold(
+        backgroundColor: PRIMARY_COLOR,
+        appBar: AppBar(
+          backgroundColor: APPBAR_BACKGROUND_COLOR,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: SECONDARY_COLOR),
+            onPressed: () => context.go('/'),
           ),
-          const SizedBox(width: 10),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 30),
-              
-              Center(
-                child: Container(
-                  width: 180,
-                  height: 180,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: SECONDARY_COLOR, width: 4),
-                    color: Colors.white,
+          title: Image.asset("lib/images/cinelog_logo.png", width: 50),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.notifications_none, color: SECONDARY_COLOR),
+              onPressed: () => context.push('/notifications'),
+            ),
+            Icon(Icons.account_circle, color: Colors.white, size: 30),
+            const SizedBox(width: 15),
+            IconButton(
+              icon: Icon(Icons.settings, color: SECONDARY_COLOR),
+              onPressed: () => context.go('/options'),
+            ),
+            const SizedBox(width: 10),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                
+                Center(
+                  child: Container(
+                    width: 180,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: SECONDARY_COLOR, width: 4),
+                      color: Colors.white,
+                    ),
+                    child: Icon(Icons.person, size: 120, color: SECONDARY_COLOR),
                   ),
-                  child: Icon(Icons.person, size: 120, color: SECONDARY_COLOR),
                 ),
-              ),
-              
-              const SizedBox(height: 15),
-              
-              Text(
-                "João Inácio",
-                style: TextStyle(color: SECONDARY_COLOR, fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "@username",
-                style: TextStyle(color: Colors.white70, fontSize: 16),
-              ),
-              
-              const SizedBox(height: 30),
-              
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2D2D2D),
-                  borderRadius: BorderRadius.circular(12),
+                
+                const SizedBox(height: 15),
+                
+                Text(
+                  "João Inácio",
+                  style: TextStyle(color: SECONDARY_COLOR, fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                child: Column(
+                Text(
+                  "@username",
+                  style: TextStyle(color: Colors.white70, fontSize: 16),
+                ),
+                
+                const SizedBox(height: 30),
+                
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2D2D2D),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      _buildStatRow("142", "Filmes Vistos"),
+                      const Divider(color: Colors.white24, height: 1),
+                      _buildStatRow("34", "Séries Vistas"),
+                      const Divider(color: Colors.white24, height: 1),
+                      _buildStatRow("520h", "Tempo de Ecrã"),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 30),
+                
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "As minhas preferências",
+                    style: TextStyle(color: SECONDARY_COLOR, fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                
+                const SizedBox(height: 20),
+                
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildStatRow("142", "Filmes Vistos"),
-                    Divider(color: Colors.white24, height: 1),
-                    _buildStatRow("34", "Séries Vistas"),
-                    Divider(color: Colors.white24, height: 1),
-                    _buildStatRow("520h", "Tempo de Ecrã"),
+                    _buildPreferenceCircle("80%", "Comédia"),
+                    _buildPreferenceCircle("60%", "Terror"),
+                    _buildPreferenceCircle("20%", "Thriller"),
+                    _buildPreferenceCircle("50%", "Romance"),
                   ],
                 ),
-              ),
-              
-              const SizedBox(height: 30),
-              
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "As minhas preferências",
-                  style: TextStyle(color: SECONDARY_COLOR, fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-              
-              const SizedBox(height: 20),
-              
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildPreferenceCircle("80%", "Comédia"),
-                  _buildPreferenceCircle("60%", "Terror"),
-                  _buildPreferenceCircle("20%", "Thriller"),
-                  _buildPreferenceCircle("50%", "Romance"),
-                ],
-              ),
 
-              const SizedBox(height: 30),
-
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Os meus favoritos",
-                  style: TextStyle(color: SECONDARY_COLOR, fontSize: 18, fontWeight: FontWeight.bold),
+                const SizedBox(height: 30),
+                
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TabBar(
+                    isScrollable: true, 
+                    tabAlignment: TabAlignment.start,
+                    dividerColor: Colors.transparent,
+                    indicatorColor: SECONDARY_COLOR,
+                    labelColor: SECONDARY_COLOR, 
+                    unselectedLabelColor: Colors.white54,
+                    tabs: const [
+                      Tab(text: "Favoritos"),
+                      Tab(text: "Watchlist"),
+                      Tab(text: "Assistidos"),
+                    ],
+                  ),
                 ),
-              ),
-              
-              const SizedBox(height: 15),
-              
-              SizedBox(
-                height: 180,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Container(
-                        width: 120,
-                        decoration: BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Icon(Icons.movie_creation_outlined, color: Colors.white24, size: 40),
-                        ),
-                      ),
-                    );
-                  },
+                
+                const SizedBox(height: 15),
+                
+                SizedBox(
+                  height: 180,
+                  child: TabBarView(
+                    children: [
+                      _buildMovieList(),
+                      _buildMovieList(),
+                      _buildMovieList(),
+                    ],
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: 40),
-            ],
+                const SizedBox(height: 40), 
+              ],
+            ),
           ),
         ),
       ),
@@ -150,7 +151,7 @@ class ProfileScreen extends StatelessWidget {
         children: [
           Text(value, style: TextStyle(color: SECONDARY_COLOR, fontSize: 32, fontWeight: FontWeight.bold)),
           const SizedBox(width: 10),
-          Text(label, style: TextStyle(color: Colors.white, fontSize: 20)),
+          Text(label, style: const TextStyle(color: Colors.white, fontSize: 20)),
         ],
       ),
     );
@@ -172,12 +173,34 @@ class ProfileScreen extends StatelessWidget {
                 strokeWidth: 6,
               ),
             ),
-            Text(percentage, style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+            Text(percentage, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
           ],
         ),
         const SizedBox(height: 8),
-        Text(label, style: TextStyle(color: Colors.white, fontSize: 11)),
+        Text(label, style: const TextStyle(color: Colors.white, fontSize: 11)),
       ],
+    );
+  }
+
+  Widget _buildMovieList() {
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: Container(
+            width: 120,
+            decoration: BoxDecoration(
+              color: Colors.white12,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Center(
+              child: Icon(Icons.movie_creation_outlined, color: Colors.white24, size: 40),
+            ),
+          ),
+        );
+      },
     );
   }
 }
