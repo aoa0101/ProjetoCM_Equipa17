@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:cinelog/main_app_screens/movie_card.dart';
-
 import 'package:cinelog/color_scheme.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -15,11 +15,17 @@ class SearchScreen extends StatelessWidget {
         backgroundColor: APPBAR_BACKGROUND_COLOR,
         elevation: 0,
         iconTheme: IconThemeData(color: SECONDARY_COLOR),
+        title: Image.asset("lib/images/cinelog_logo.png", width: 50),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Image.asset("lib/images/cinelog_logo.png", width: 50),
+          IconButton(
+            icon: Icon(Icons.notifications_none, color: SECONDARY_COLOR),
+            onPressed: () {},
           ),
+          IconButton(
+            icon: Icon(Icons.settings, color: SECONDARY_COLOR),
+            onPressed: () => context.push('/options'),
+          ),
+          const SizedBox(width: 10),
         ],
       ),
       body: SingleChildScrollView(
@@ -84,7 +90,7 @@ class SearchScreen extends StatelessWidget {
                 ),
                 itemCount: 10,
                 itemBuilder: (context, index) {
-                  return MovieCard();
+                  return const MovieCard();
                 },
               ),
               

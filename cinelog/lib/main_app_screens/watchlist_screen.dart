@@ -2,25 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:cinelog/color_scheme.dart';
-
 import 'package:cinelog/main_app_screens/movie_card.dart';
 
-class MainScreenWidget extends StatelessWidget {
-  const MainScreenWidget({super.key});
+class WatchlistScreen extends StatelessWidget {
+  const WatchlistScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: PRIMARY_COLOR, 
+      backgroundColor: PRIMARY_COLOR,
       appBar: AppBar(
         backgroundColor: APPBAR_BACKGROUND_COLOR,
         elevation: 0,
-        iconTheme: IconThemeData(color: SECONDARY_COLOR),
-        title: Image.asset("lib/images/cinelog_logo.png", width: 50),
-        actions: [      
+        title: Text(
+          "Watchlist",
+          style: TextStyle(
+            color: SECONDARY_COLOR, 
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+        ),
+        actions: [
           IconButton(
             icon: Icon(Icons.notifications_none, color: SECONDARY_COLOR),
-            onPressed: () {}, 
+            onPressed: () {},
           ),
           IconButton(
             icon: Icon(Icons.settings, color: SECONDARY_COLOR),
@@ -36,9 +41,9 @@ class MainScreenWidget extends StatelessWidget {
             crossAxisCount: 2, 
             crossAxisSpacing: 20,
             mainAxisSpacing: 25,
-            childAspectRatio: 0.75,
+            childAspectRatio: 0.75, 
           ),
-          itemCount: 10,
+          itemCount: 6,
           itemBuilder: (context, index) {
             return const MovieCard();
           }, 

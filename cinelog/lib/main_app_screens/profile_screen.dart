@@ -8,26 +8,23 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3, 
+      length: 2, 
       child: Scaffold(
         backgroundColor: PRIMARY_COLOR,
         appBar: AppBar(
           backgroundColor: APPBAR_BACKGROUND_COLOR,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: SECONDARY_COLOR),
-            onPressed: () => context.go('/'),
-          ),
+          elevation: 0,
+          // 1. Removemos o 'leading' (a seta de voltar)
           title: Image.asset("lib/images/cinelog_logo.png", width: 50),
           actions: [
             IconButton(
               icon: Icon(Icons.notifications_none, color: SECONDARY_COLOR),
-              onPressed: () => context.push('/notifications'),
+              onPressed: () {},
             ),
-            Icon(Icons.account_circle, color: Colors.white, size: 30),
-            const SizedBox(width: 15),
+            // 2. Removemos o Icon do account_circle que estava aqui
             IconButton(
               icon: Icon(Icons.settings, color: SECONDARY_COLOR),
-              onPressed: () => context.go('/options'),
+              onPressed: () => context.push('/options'),
             ),
             const SizedBox(width: 10),
           ],
@@ -58,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
                   "João Inácio",
                   style: TextStyle(color: SECONDARY_COLOR, fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                Text(
+                const Text(
                   "@username",
                   style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
@@ -108,15 +105,14 @@ class ProfileScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: TabBar(
-                    isScrollable: true, 
+                    isScrollable: true,
                     tabAlignment: TabAlignment.start,
                     dividerColor: Colors.transparent,
                     indicatorColor: SECONDARY_COLOR,
-                    labelColor: SECONDARY_COLOR, 
+                    labelColor: SECONDARY_COLOR,
                     unselectedLabelColor: Colors.white54,
                     tabs: const [
                       Tab(text: "Favoritos"),
-                      Tab(text: "Watchlist"),
                       Tab(text: "Assistidos"),
                     ],
                   ),
@@ -125,10 +121,9 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 15),
                 
                 SizedBox(
-                  height: 180,
+                  height: 180, 
                   child: TabBarView(
                     children: [
-                      _buildMovieList(),
                       _buildMovieList(),
                       _buildMovieList(),
                     ],

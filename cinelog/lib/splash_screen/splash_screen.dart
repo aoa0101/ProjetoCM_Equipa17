@@ -33,10 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 25.0),
-              child: Image.asset('lib/images/cinelog_logo.png', width: 800),
-            ),
+            Image.asset('lib/images/cinelog_logo.png', width: 600),
           ],
         ),
       ),
