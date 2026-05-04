@@ -9,7 +9,7 @@ class MovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell( 
-      onTap: () => context.go("/movie"),
+      onTap: () => context.push("/movie"),
       borderRadius: BorderRadius.circular(8),
     child: Container(
       decoration: BoxDecoration(
