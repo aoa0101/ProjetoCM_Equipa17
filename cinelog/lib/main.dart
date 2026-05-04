@@ -1,3 +1,4 @@
+import 'package:cinelog/main_app_screens/notifications_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cinelog/splash_screen/splash_screen.dart';
@@ -35,9 +36,15 @@ final GoRouter _router = GoRouter(
     ),
 
     GoRoute(
+      path: '/notifications', 
+      builder: (BuildContext context, GoRouterState state) => const NotificationsPage()
+    ),
+
+    GoRoute(
       path: '/options', 
       builder: (BuildContext context, GoRouterState state) => const OptionsScreenWidget()
     ),
+
     GoRoute(
       path: '/movie', 
       builder: (context, state) => const MoviePage()

@@ -15,7 +15,7 @@ class LogoAppBar extends StatelessWidget implements PreferredSizeWidget{
           actions: [
             IconButton(
               icon: Icon(Icons.notifications_none),
-              onPressed: () {},
+              onPressed: () => context.push('/notifications'),
             ),
             IconButton(
               icon: Icon(Icons.settings),
