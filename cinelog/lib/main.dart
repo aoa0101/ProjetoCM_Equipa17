@@ -11,6 +11,7 @@ import 'package:cinelog/main_app_screens/profile_screen.dart';
 import 'package:cinelog/main_app_screens/search_screen.dart';
 import 'package:cinelog/main_app_screens/main_layout.dart';
 import 'package:cinelog/main_app_screens/watchlist_screen.dart';
+import 'package:go_transitions/go_transitions.dart';
 
 void main() {
   runApp(const MainApp());
@@ -29,6 +30,7 @@ final GoRouter _router = GoRouter(
       builder: (context, state) => const LoginScreen(),
       routes: <RouteBase>[
         GoRoute(
+          pageBuilder: GoTransitions.slide.toRight.withFade,
           path: 'register', // Fica: /login/register
           builder: (context, state) => const RegisterScreen()
         ), 
@@ -42,12 +44,14 @@ final GoRouter _router = GoRouter(
 
     GoRoute(
       path: '/options', 
-      builder: (BuildContext context, GoRouterState state) => const OptionsScreenWidget()
+      builder: (BuildContext context, GoRouterState state) => const OptionsScreenWidget(),
+      pageBuilder: GoTransitions.slide.toRight.withFade,
     ),
 
     GoRoute(
       path: '/movie', 
-      builder: (context, state) => const MoviePage()
+      builder: (context, state) => const MoviePage(),
+      pageBuilder: GoTransitions.slide.toRight.withFade,
     ),
   
     ShellRoute(
@@ -57,19 +61,23 @@ final GoRouter _router = GoRouter(
       routes: [
         GoRoute(
           path: '/', 
-          builder: (BuildContext context, GoRouterState state) => const MainScreenWidget()
+          builder: (BuildContext context, GoRouterState state) => const MainScreenWidget(),
+          pageBuilder: GoTransitions.slide.toRight.withFade,
         ),
         GoRoute(
           path: '/search', 
-          builder: (context, state) => const SearchScreen()
+          builder: (context, state) => const SearchScreen(),
+          pageBuilder: GoTransitions.slide.toRight.withFade,
         ),
         GoRoute(
           path: '/watchlist', 
-          builder: (context, state) => const WatchlistScreen()
+          builder: (context, state) => const WatchlistScreen(),
+          pageBuilder: GoTransitions.slide.toRight.withFade,
         ),
         GoRoute(
           path: '/profile', 
-          builder: (context, state) => const ProfileScreen()
+          builder: (context, state) => const ProfileScreen(),
+          pageBuilder: GoTransitions.slide.toRight.withFade,
         ),
       ],
     ),
@@ -81,6 +89,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GoTransition.defaultCurve = Curves.easeInOut;
+    GoTransition.defaultDuration = const Duration(milliseconds: 200);
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
