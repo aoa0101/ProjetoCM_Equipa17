@@ -1,4 +1,5 @@
 import 'package:cinelog/main_app_screens/notifications_screen.dart';
+import 'package:cinelog/models/movie.dart';
 import 'package:cinelog/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -51,7 +52,10 @@ final GoRouter _router = GoRouter(
 
     GoRoute(
       path: '/movie', 
-      builder: (context, state) => const MoviePage(),
+      builder: (context, state) {
+        final movie = state.extra as Movie;
+          return MoviePage(movie: movie);
+        },
       pageBuilder: GoTransitions.slide.toRight.withFade.call,
     ),
   

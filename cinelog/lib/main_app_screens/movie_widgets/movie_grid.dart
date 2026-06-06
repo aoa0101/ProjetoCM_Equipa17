@@ -6,13 +6,11 @@ import 'package:flutter/material.dart';
 
 class MovieGrid extends StatefulWidget {
   final bool neverScrollable;
+
   const MovieGrid({super.key, this.neverScrollable = false});
 
-  
   @override
-  State<StatefulWidget> createState() {
-    return MovieGridState();
-  }
+  State<StatefulWidget> createState() => MovieGridState();  
 
 }
 
@@ -25,9 +23,7 @@ class MovieGridState extends State<MovieGrid> {
       builder: (context, asyncSnapshot){
         if (asyncSnapshot.hasData){
           movieList = asyncSnapshot.requireData;
-
-          print(movieList.length);
-          
+                    
           return GridView.builder(
           shrinkWrap: true,
           physics: widget.neverScrollable ? NeverScrollableScrollPhysics() : null,
