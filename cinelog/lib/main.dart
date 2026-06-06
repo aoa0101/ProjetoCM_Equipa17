@@ -1,4 +1,5 @@
 import 'package:cinelog/main_app_screens/notifications_screen.dart';
+import 'package:cinelog/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cinelog/splash_screen/splash_screen.dart';
@@ -30,7 +31,7 @@ final GoRouter _router = GoRouter(
       builder: (context, state) => const LoginScreen(),
       routes: <RouteBase>[
         GoRoute(
-          pageBuilder: GoTransitions.slide.toRight.withFade,
+          pageBuilder: GoTransitions.slide.toRight.withFade.call,
           path: 'register', // Fica: /login/register
           builder: (context, state) => const RegisterScreen()
         ), 
@@ -45,13 +46,13 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/options', 
       builder: (BuildContext context, GoRouterState state) => const OptionsScreenWidget(),
-      pageBuilder: GoTransitions.slide.toRight.withFade,
+      pageBuilder: GoTransitions.slide.toRight.withFade.call,
     ),
 
     GoRoute(
       path: '/movie', 
       builder: (context, state) => const MoviePage(),
-      pageBuilder: GoTransitions.slide.toRight.withFade,
+      pageBuilder: GoTransitions.slide.toRight.withFade.call,
     ),
   
     ShellRoute(
@@ -62,22 +63,22 @@ final GoRouter _router = GoRouter(
         GoRoute(
           path: '/', 
           builder: (BuildContext context, GoRouterState state) => const MainScreenWidget(),
-          pageBuilder: GoTransitions.slide.toRight.withFade,
+          pageBuilder: GoTransitions.slide.toRight.withFade.call,
         ),
         GoRoute(
           path: '/search', 
           builder: (context, state) => const SearchScreen(),
-          pageBuilder: GoTransitions.slide.toRight.withFade,
+          pageBuilder: GoTransitions.slide.toRight.withFade.call,
         ),
         GoRoute(
           path: '/watchlist', 
           builder: (context, state) => const WatchlistScreen(),
-          pageBuilder: GoTransitions.slide.toRight.withFade,
+          pageBuilder: GoTransitions.slide.toRight.withFade.call,
         ),
         GoRoute(
           path: '/profile', 
           builder: (context, state) => const ProfileScreen(),
-          pageBuilder: GoTransitions.slide.toRight.withFade,
+          pageBuilder: GoTransitions.slide.toRight.withFade.call,
         ),
       ],
     ),

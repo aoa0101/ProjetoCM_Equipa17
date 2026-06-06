@@ -1,10 +1,13 @@
+import 'package:cinelog/models/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:cinelog/color_scheme.dart';
 
 class MovieCard extends StatelessWidget {
-  const MovieCard({super.key});
+  final Movie movie;
+
+  const MovieCard({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +21,13 @@ class MovieCard extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          const Center(
-            child: Icon(Icons.category, size: 60, color: Colors.black12),
+          Positioned.fill(
+            child: Image.network(
+              movie.imgPath,
+              fit: BoxFit.cover,
+            )
           ),
-          
+
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -41,12 +47,12 @@ class MovieCard extends StatelessWidget {
             ),
           ),
           
-          const Align(
+          Align(
             alignment: Alignment.bottomLeft,
             child: Padding(
               padding: EdgeInsets.all(12.0),
               child: Text(
-                "Title",
+                movie.title,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
