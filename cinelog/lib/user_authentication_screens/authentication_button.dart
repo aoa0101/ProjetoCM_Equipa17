@@ -1,15 +1,12 @@
 import 'package:cinelog/color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
 class AuthenticationButton extends StatelessWidget {
   ///The path used in context.go() to navigate. 
-  final String path;
+  final String text;
   
   ///The text inside that will be inside the button.
-  final String text;
-
-  const AuthenticationButton({super.key, required this.path, required this.text});
+  final VoidCallback? onPressed;
+  const AuthenticationButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +20,7 @@ class AuthenticationButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             ),
           ),
-          onPressed: () {
-              context.go(path);
-          },
+          onPressed: onPressed,
           child: Text(
             text,
             style: TextStyle(color: Colors.black)),

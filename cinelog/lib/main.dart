@@ -13,8 +13,15 @@ import 'package:cinelog/main_app_screens/search_screen.dart';
 import 'package:cinelog/main_app_screens/main_layout.dart';
 import 'package:cinelog/main_app_screens/watchlist_screen.dart';
 import 'package:go_transitions/go_transitions.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );  
+
   runApp(const MainApp());
 }
 

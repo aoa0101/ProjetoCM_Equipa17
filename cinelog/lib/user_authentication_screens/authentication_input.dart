@@ -7,12 +7,14 @@ class AuthenticationInput extends StatelessWidget {
 
   ///Boolean to decide if the text inside the input is hidden (`true`) or not (`false`). 
   final bool obscure;
+  final TextEditingController controller;
 
-  const AuthenticationInput({super.key, required this.hintText, this.obscure = false});
+  const AuthenticationInput({super.key, required this.hintText, this.obscure = false, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       obscureText: obscure,
       style: TextStyle(color: SECONDARY_COLOR),
       decoration: InputDecoration(
