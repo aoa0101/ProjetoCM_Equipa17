@@ -1,3 +1,4 @@
+import 'package:cinelog/models/loading.dart';
 import 'package:cinelog/models/movie.dart';
 import 'package:cinelog/services/services.dart';
 import 'package:flutter/material.dart';
@@ -263,11 +264,7 @@ class MoviePageState extends State<MoviePage> {
                 )
               );
             }
-            return Center(
-              child: CircularProgressIndicator(
-                color: SECONDARY_COLOR,
-              )
-            );
+            return loading;
           }),
       );
   }

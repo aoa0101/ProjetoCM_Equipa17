@@ -1,6 +1,5 @@
 import 'package:cinelog/main_app_screens/notifications_screen.dart';
 import 'package:cinelog/models/movie.dart';
-import 'package:cinelog/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cinelog/splash_screen/splash_screen.dart';

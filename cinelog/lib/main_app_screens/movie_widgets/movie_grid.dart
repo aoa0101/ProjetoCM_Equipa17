@@ -1,13 +1,13 @@
-import 'package:cinelog/color_scheme.dart';
 import 'package:cinelog/main_app_screens/movie_widgets/movie_card.dart';
+import 'package:cinelog/models/loading.dart';
 import 'package:cinelog/models/movie.dart';
 import 'package:cinelog/services/services.dart';
 import 'package:flutter/material.dart';
 
 class MovieGrid extends StatefulWidget {
   final bool neverScrollable;
-
-  const MovieGrid({super.key, this.neverScrollable = false});
+  final Future Function({int page}) apiCall;
+  const MovieGrid({super.key, this.neverScrollable = false, this.apiCall = ApiService.getMainPageMovies});
 
   @override
   State<StatefulWidget> createState() => MovieGridState();  
@@ -19,6 +19,7 @@ class MovieGridState extends State<MovieGrid> {
   final ScrollController _controller = ScrollController();
   int currentPage = 1;
   bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +38,7 @@ class MovieGridState extends State<MovieGrid> {
     
     currentPage++;
     
-    List<Movie> nextPage = await ApiService.getMainPageMovies(page: currentPage);
+    List<Movie> nextPage = await widget.apiCall(page: currentPage);
 
     setState(() {
       movieList.addAll(nextPage);
@@ -47,7 +48,7 @@ class MovieGridState extends State<MovieGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: ApiService.getMainPageMovies(), 
+    return FutureBuilder(future: widget.apiCall(), 
       builder: (context, asyncSnapshot){
         if (asyncSnapshot.hasData){
           if(movieList.isEmpty){ //Para garantir que quando o estado for atualizado a movieList é atualizada com os novos filmes e não resetada pelo FutureBuilder
@@ -69,10 +70,7 @@ class MovieGridState extends State<MovieGrid> {
             }
           );
         }
-        return Center(
-          child: CircularProgressIndicator(
-            color: SECONDARY_COLOR,
-        ));
+        return loading;
       }
     );
   }
