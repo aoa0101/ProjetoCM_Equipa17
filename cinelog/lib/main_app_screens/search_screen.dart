@@ -19,13 +19,14 @@ class SearchScreenState extends State<SearchScreen>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ScrollController _controller = ScrollController();
 
-
   String searchValue = '';
   String? genreValue;
   String? languageValue;
   String? yearValue;
   String? ageRatingValue;
   String? ratingValue;
+
+  Map currentFilters = {};
 
   @override
   void initState() {
@@ -58,8 +59,13 @@ class SearchScreenState extends State<SearchScreen>{
                       TextFormField(
                         onFieldSubmitted: (value) {
                           setState(() {
-                            searchValue = value;   
-                            print(searchValue);                       
+                            searchValue = value;
+                            currentFilters['genre'] = genreValue;
+                            currentFilters['language'] = languageValue;
+                            currentFilters['year'] = yearValue;
+                            currentFilters['ageRating'] = ageRatingValue;
+                            currentFilters['rating'] = ratingValue;
+                            print(ratingValue == 'null');                       
                           });
                         },
                         style: const TextStyle(color: Colors.white),
@@ -87,11 +93,11 @@ class SearchScreenState extends State<SearchScreen>{
                           spacing: 10,
                           runSpacing: 10,
                           children: [ //Filters
-                            FilterDropdown(filterName: 'Género', options: filtersMap['genres'] ?? [], onChanged: (value) => setState(() => genreValue = value.toString())),
-                            FilterDropdown(filterName: 'Ano', options: filtersMap['years'] ?? [], onChanged: (value) => setState(() => yearValue = value.toString())),
-                            FilterDropdown(filterName:"Idioma", options: filtersMap['languages'] ?? [], onChanged: (value) => setState(() => languageValue = value.toString())),
-                            FilterDropdown(filterName:"Faixa Etária", options: filtersMap['certifications'] ?? [], onChanged: (value) => setState(() => ageRatingValue = value.toString())),
-                            FilterDropdown(filterName:"Rating", options: filtersMap['ratings'] ?? [], onChanged: (value) => setState(() => ratingValue = value.toString())),
+                            FilterDropdown(filterName: 'Género', options: filtersMap['genres'] ?? [], onChanged: (value) => setState(() => genreValue = value?.toString())),
+                            FilterDropdown(filterName: 'Ano', options: filtersMap['years'] ?? [], onChanged: (value) => setState(() => yearValue = value?.toString())),
+                            FilterDropdown(filterName:"Idioma", options: filtersMap['languages'] ?? [], onChanged: (value) => setState(() => languageValue = value?.toString())),
+                            FilterDropdown(filterName:"Faixa Etária", options: filtersMap['certifications'] ?? [], onChanged: (value) => setState(() => ageRatingValue = value?.toString())),
+                            FilterDropdown(filterName:"Rating", options: filtersMap['ratings'] ?? [], onChanged: (value) => setState(() => ratingValue = value?.toString())),
                             ],
                           ),
                         ),
@@ -108,7 +114,7 @@ class SearchScreenState extends State<SearchScreen>{
 
                 const SizedBox(height: 15),
 
-                (searchValue.isNotEmpty) ? MovieGrid(neverScrollable: true, searchQuery: searchValue, controller: _controller,) : 
+                (searchValue.isNotEmpty) ? MovieGrid(neverScrollable: true, searchQuery: searchValue, controller: _controller, filters: currentFilters,) : 
                   Center(
                     heightFactor: 10, 
                     child: Text(

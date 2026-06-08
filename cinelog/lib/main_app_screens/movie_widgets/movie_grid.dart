@@ -9,7 +9,8 @@ class MovieGrid extends StatefulWidget {
   final bool neverScrollable;
   final String? searchQuery;
   final ScrollController? controller;
-  const MovieGrid({super.key, this.neverScrollable = false, this.controller, this.searchQuery});
+  final Map? filters;
+  const MovieGrid({super.key, this.neverScrollable = false, this.controller, this.searchQuery, this.filters});
 
   @override
   State<StatefulWidget> createState() => MovieGridState();  
@@ -23,16 +24,12 @@ class MovieGridState extends State<MovieGrid> {
   bool isLoading = false;
   String latestSearch = '';
   Future? future;
-
-  int movieListSize(){
-    return movieList.length;
-  }
-
+  
   @override
   void initState() {
     super.initState();
     if(widget.controller != null) _controller = widget.controller!;
-    future = widget.searchQuery == null ? ApiService.getMainPageMovies() : ApiService.getSearchResults(searchValue: widget.searchQuery!);
+    future = widget.searchQuery == null ? ApiService.getMainPageMovies() : ApiService.getSearchResults(searchValue: widget.searchQuery!, filters: widget.filters!);
     _loadFirstPage();
     
     _controller.addListener(() async {
@@ -46,12 +43,9 @@ class MovieGridState extends State<MovieGrid> {
   void didUpdateWidget(covariant MovieGrid oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if(oldWidget.searchQuery != widget.searchQuery){
-      latestSearch = widget.searchQuery ?? '';
       movieList.clear();
-      future = widget.searchQuery == null ? ApiService.getMainPageMovies() : ApiService.getSearchResults(searchValue: widget.searchQuery!);
+      future = widget.searchQuery == null ? ApiService.getMainPageMovies() : ApiService.getSearchResults(searchValue: widget.searchQuery!, filters: widget.filters!);
       _loadFirstPage();
-    }
   }
 
   void _loadFirstPage() async{
@@ -62,7 +56,7 @@ class MovieGridState extends State<MovieGrid> {
     List<Movie> firstPage = 
     widget.searchQuery == null ?
      await ApiService.getMainPageMovies(page: currentPage) : 
-     await ApiService.getSearchResults(page: currentPage, searchValue: widget.searchQuery!);
+     await ApiService.getSearchResults(page: currentPage, searchValue: widget.searchQuery!, filters: widget.filters!);
 
     setState(() {
       movieList = firstPage;
@@ -80,7 +74,7 @@ class MovieGridState extends State<MovieGrid> {
     List<Movie> nextPage = 
     widget.searchQuery == null ?
      await ApiService.getMainPageMovies(page: currentPage) : 
-     await ApiService.getSearchResults(page: currentPage, searchValue: widget.searchQuery!);
+     await ApiService.getSearchResults(page: currentPage, searchValue: widget.searchQuery!, filters: widget.filters!);
 
     setState(() {
       movieList.addAll(nextPage);
@@ -108,31 +102,33 @@ class MovieGridState extends State<MovieGrid> {
 
           }
 
-          return movieList.isNotEmpty ? GridView.builder(
+          return GridView.builder(
             controller: widget.controller == null ? _controller : null,
             shrinkWrap: true,
             physics: widget.neverScrollable ? NeverScrollableScrollPhysics() : null,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, 
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: movieList.isEmpty ? 1 : 2, 
               crossAxisSpacing: 20,
               mainAxisSpacing: 25,
-              childAspectRatio: 0.75,
+              childAspectRatio: movieList.isEmpty ? 1 : 0.75,
             ),
-            itemCount: movieList.length,
+            itemCount: movieList.isEmpty ? 1 : movieList.length,
             itemBuilder: (context, index) {
+              if(movieList.isEmpty) {
+                return Center(
+                    heightFactor: 10,
+                    child: Text(
+                      'Sem resultados', 
+                      style: TextStyle(
+                        color: SECONDARY_COLOR,
+                        fontSize: 25
+                      )
+                    ),
+                  ); 
+              }
               return  MovieCard(movie: movieList[index]);
             }
-          ) 
-          : Center(
-                heightFactor: 10, 
-                child: Text(
-                  'Sem resultados', 
-                  style: TextStyle(
-                    color: SECONDARY_COLOR,
-                    fontSize: 25
-                  )
-                ),
-              );
+          ); 
         }
         return loading;
       }

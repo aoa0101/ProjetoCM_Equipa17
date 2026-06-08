@@ -19,8 +19,9 @@ class Movie{
     this.director = 'Não disponível'
     });
 
-  factory Movie.fromJson(Map<String, dynamic> json){
+  factory Movie.fromJson({required Map<String, dynamic> json, String? genre, String? language, String? rating}){
     String fixedPath = 'https://image.tmdb.org/t/p/w500${json["poster_path"]}';
+
     return Movie(
       movieId: json["id"] as int,
       title: json["title"] as String,
