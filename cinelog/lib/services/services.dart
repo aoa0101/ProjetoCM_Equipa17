@@ -15,6 +15,21 @@ class ApiService{
     return movieList;
   }
 
+  static Future getSearchResults({required String searchValue, String? genreValue, String? languageValue, String? yearValue, String? ageRatingValue, String? ratingValue, int page = 1}) async{
+    String url = 'https://api.themoviedb.org/3/search/movie?query=$searchValue&include_adult=false&language=en-US&page=$page';
+    if (yearValue != null) url = '$url&primary_release_year=$yearValue';
+
+    print(url);
+
+    final response = await _makeRequest(url: url);
+
+    //'?certification=M%2F12&certification_country=PT&include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=1997&sort_by=popularity.desc&vote_average.gte=1&vote_average.lte=5&with_genres=28&with_original_language=en'
+
+    List movieList = (json.decode(response.body)['results'] as List).map((json) => Movie.fromJson(json)).toList();
+    //print(movieList);
+    return movieList;
+  }
+
   static Future getMoviePageDetails({required Movie movie}) async{
     final results = await Future.wait([
       _getMovieGenres(movieId: movie.movieId),
@@ -144,13 +159,14 @@ class ApiService{
     final response = await _makeRequest(url: 'https://api.themoviedb.org/3/certification/movie/list');
 
     Map certifications = (json.decode(response.body)['certifications'] as Map);
-    print(certifications['PT'] as List);
+
     List ptCertifications = [];
     
     for (var element in  certifications['PT'] as List) {
         ptCertifications.add({'id': element['certification'], 'name': element['certification']});
       
     }
+
     return ptCertifications;
   }
 }
