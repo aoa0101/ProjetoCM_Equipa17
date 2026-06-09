@@ -16,12 +16,13 @@ import 'package:go_transitions/go_transitions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 void main() async {
+  //garante que os bindings do flutter estão inicializados antes de executar qualquer código assíncrono
   WidgetsFlutterBinding.ensureInitialized();
-
+  // inicializa o Firebase com as configuraçoes especificas para a plataforma
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );  
-
+  // inicia a aplicação 
   runApp(const MainApp());
 }
 

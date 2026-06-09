@@ -1,10 +1,12 @@
 import 'package:cinelog/color_scheme.dart';
 import 'package:flutter/material.dart';
+
+// Widget personalizado e reutilizavel para os botões de autenticação (login e registo)
 class AuthenticationButton extends StatelessWidget {
-  ///The path used in context.go() to navigate. 
+  //texto apresentado no botão
   final String text;
   
-  ///The text inside that will be inside the button.
+  //função a ser executada quando o botão for pressionado
   final VoidCallback? onPressed;
   const AuthenticationButton({super.key, required this.text, required this.onPressed});
 
