@@ -1,4 +1,5 @@
 import 'package:cinelog/main_app_screens/logo_app_bar.dart';
+import 'package:cinelog/main_app_screens/movie_widgets/movie_card.dart';
 import 'package:cinelog/models/loading.dart';
 import 'package:cinelog/models/movie.dart';
 import 'package:cinelog/services/firestore_service.dart';
@@ -270,11 +271,9 @@ class ProfileScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white12,
                   borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                    image: NetworkImage(movie.imgPath),
-                    fit: BoxFit.cover,
-                  ),
                 ),
+               child: MovieCard(movie: movie),
+
               ),
             );
           },

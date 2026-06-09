@@ -40,7 +40,7 @@ class MovieCard extends StatelessWidget {
                   colors: [
                     Colors.transparent,
                     Color(0x408B8B8B),
-                    SECONDARY_COLOR.withValues(alpha: 0.9),
+                    SECONDARY_COLOR.withValues(alpha: 0.5),
                   ],
                 ),
               ),
