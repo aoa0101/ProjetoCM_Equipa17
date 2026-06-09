@@ -286,7 +286,7 @@ class ActionButton extends StatefulWidget {
 
 class _ActionButtonState extends State<ActionButton> {
   bool _isActive = false;
-  bool _isLoading = false; // Novo: impede cliques repetidos
+  bool _isLoading = false; 
 
   @override
   void initState() {
@@ -301,27 +301,22 @@ class _ActionButtonState extends State<ActionButton> {
   }
 
   void _handleTap() async {
-    // Se não for a watchlist, se não houver filme ou se já estiver a carregar, ignora
     if (widget.label != "Watchlist" || widget.movie == null || _isLoading) return;
 
     final previousState = _isActive;
 
-    // 1. Atualização Otimista: Muda a UI imediatamente e bloqueia novos cliques
     setState(() {
       _isLoading = true;
       _isActive = !_isActive; 
     });
 
     try {
-      // 2. Executa a operação em segundo plano
       if (previousState) {
         await FirestoreService.removeFromWatchlist(widget.movie!.movieId);
       } else {
         await FirestoreService.addToWatchlist(widget.movie!);
       }
     } catch (e) {
-      // 3. Tratamento de Erros (Critério de Avaliação!) 
-      // Se falhar (ex: sem net), reverte o estado e avisa o utilizador
       if (mounted) {
         setState(() {
           _isActive = previousState;
@@ -331,7 +326,6 @@ class _ActionButtonState extends State<ActionButton> {
         SnackBar(content: Text("Erro ao atualizar a Watchlist. Tenta novamente.")),
       );
     } finally {
-      // 4. Liberta o botão para novos cliques
       if (mounted) {
         setState(() => _isLoading = false);
       }
@@ -343,7 +337,6 @@ class _ActionButtonState extends State<ActionButton> {
     return Column(
       children: [
         IconButton(
-          // Se estiver a carregar, podes opcionalmente desativar visualmente o clique
           onPressed: _isLoading ? null : _handleTap, 
           style: IconButton.styleFrom(
             backgroundColor: _isActive ? SECONDARY_COLOR.withValues(alpha: 0.3) : Colors.white10,
