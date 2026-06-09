@@ -199,4 +199,47 @@ class FirestoreService {
       print("Erro ao gerar lembrete de watchlist: $e");
     }
   }
+
+  static Future<String> getUserNote(int movieId) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) return '';
+
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .collection('notes')
+          .doc(movieId.toString())
+          .get();
+
+      if (doc.exists) {
+        return doc.data()?['note'] ?? '';
+      }
+    } catch (e) {
+      print("Erro ao ir buscar a nota: $e");
+    }
+    return '';
+  }
+
+  static Future<void> saveUserNote(int movieId, String note, String movieTitle) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) return;
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .collection('notes')
+          .doc(movieId.toString()) 
+          .set({
+        'movieId': movieId,
+        'movieTitle': movieTitle,
+        'note': note,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      print("Erro ao guardar a nota: $e");
+      rethrow;
+    }
+  }
 }

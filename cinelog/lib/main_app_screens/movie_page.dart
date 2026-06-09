@@ -18,6 +18,59 @@ class MoviePage extends StatefulWidget {
 }
 
 class MoviePageState extends State<MoviePage> {
+  final TextEditingController _notesController = TextEditingController();
+  bool _isSavingNote = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedNote();
+  }
+
+  @override
+  void dispose() {
+    _notesController.dispose();
+    super.dispose();
+  }
+
+  void _loadSavedNote() async {
+    // Passa o ID como int nativo
+    String savedNote = await FirestoreService.getUserNote(widget.movie.movieId);
+    if (mounted) {
+      setState(() {
+        _notesController.text = savedNote;
+      });
+    }
+  }
+
+  void _handleSaveNote() async {
+    setState(() => _isSavingNote = true);
+
+    try {
+      // Passa o ID como int nativo
+      await FirestoreService.saveUserNote(
+        widget.movie.movieId,
+        _notesController.text,
+        widget.movie.title,
+      );
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Nota guardada com sucesso! 📝")),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Erro ao guardar a nota. Tenta novamente.")),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSavingNote = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +141,7 @@ class MoviePageState extends State<MoviePage> {
 
                   MoviePage.sectionSpace,
 
-                  // ACTIONS (Agora todos passam o filme)
+                  // ACTIONS
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -187,7 +240,7 @@ class MoviePageState extends State<MoviePage> {
 
                   MoviePage.sectionSpace,
 
-                  // NOTES
+                  // NOTES TITLE
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
@@ -205,6 +258,7 @@ class MoviePageState extends State<MoviePage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
+                      controller: _notesController,
                       maxLines: 3,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
@@ -215,6 +269,40 @@ class MoviePageState extends State<MoviePage> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  // BOTÃO DE GUARDAR AS NOTAS
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton.icon(
+                        onPressed: _isSavingNote ? null : _handleSaveNote,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: SECONDARY_COLOR,
+                          foregroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        icon: _isSavingNote
+                            ? const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.black,
+                                ),
+                              )
+                            : const Icon(Icons.save, size: 18),
+                        label: const Text(
+                          "Guardar Nota",
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -328,8 +416,6 @@ class _ActionButtonState extends State<ActionButton> {
           await FirestoreService.removeFromWatchlist(widget.movie!.movieId);
         } else {
           await FirestoreService.addToWatchlist(widget.movie!);
-          
-          // O CÓDIGO CAI AQUI PARA A WATCHLIST:
           await FirestoreService.generateNotification(
             "Filme na Watchlist! 📌",
             "Não te esqueças de ver '${widget.movie!.title}' mais tarde!",
@@ -340,8 +426,6 @@ class _ActionButtonState extends State<ActionButton> {
           await FirestoreService.removeFromFavorites(widget.movie!.movieId);
         } else {
           await FirestoreService.addToFavorites(widget.movie!);
-          
-          // APROVEITAMOS E ADICIONAMOS TAMBÉM SE FOR FAVORITO:
           await FirestoreService.generateNotification(
             "Novo Favorito! ❤️",
             "Adicionaste '${widget.movie!.title}' aos teus filmes favoritos.",
@@ -352,8 +436,6 @@ class _ActionButtonState extends State<ActionButton> {
           await FirestoreService.removeFromWatched(widget.movie!.movieId);
         } else {
           await FirestoreService.addToWatched(widget.movie!);
-          
-          // E TAMBÉM SE FOR ADICIONADO AOS VISTOS:
           await FirestoreService.generateNotification(
             "Mais um para a conta! 🍿",
             "Marcaste '${widget.movie!.title}' como visto.",
