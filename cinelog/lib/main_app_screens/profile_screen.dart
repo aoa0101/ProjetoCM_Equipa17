@@ -18,7 +18,10 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: PRIMARY_COLOR,
       appBar: LogoAppBar(),
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: FirestoreService.getUserProfileStream(),
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser?.uid)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return loading;
@@ -64,7 +67,6 @@ class ProfileScreen extends StatelessWidget {
                     
                     const SizedBox(height: 30),
                     
-                    // STREAM QUE GERE AS ESTATÍSTICAS E OS GRÁFICOS EM TEMPO REAL
                     StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('users')
@@ -77,7 +79,6 @@ class ProfileScreen extends StatelessWidget {
                         int totalHours = moviesWatchedCount * 2;
                         String screenTime = "${totalHours}h";
 
-                        // Variáveis para contar os géneros dos filmes assistidos
                         int comedyCount = 0;
                         int horrorCount = 0;
                         int romanceCount = 0;
@@ -87,10 +88,8 @@ class ProfileScreen extends StatelessWidget {
                           for (var doc in watchedSnapshot.data!.docs) {
                             var data = doc.data() as Map<String, dynamic>?;
                             if (data != null) {
-                              // Tenta obter o campo 'genre' ou 'genres' do filme guardado
                               var genreData = data['genre'] ?? data['genres'] ?? '';
                               
-                              // Se os géneros forem guardados como uma Lista (List)
                               if (genreData is List) {
                                 for (var g in genreData) {
                                   String genreStr = g.toString().toLowerCase();
@@ -99,9 +98,7 @@ class ProfileScreen extends StatelessWidget {
                                   if (genreStr.contains('romanc')) romanceCount++;
                                   if (genreStr.contains('thrill') || genreStr.contains('suspens')) thrillerCount++;
                                 }
-                              } 
-                              // Se for guardado apenas como uma String de texto única
-                              else {
+                              } else {
                                 String genreStr = genreData.toString().toLowerCase();
                                 if (genreStr.contains('comé') || genreStr.contains('comed')) comedyCount++;
                                 if (genreStr.contains('terr') || genreStr.contains('horror')) horrorCount++;
@@ -112,7 +109,6 @@ class ProfileScreen extends StatelessWidget {
                           }
                         }
 
-                        // Cálculo das percentagens com base no total de filmes assistidos nessa categoria
                         String comedyPct = moviesWatchedCount > 0 ? "${((comedyCount / moviesWatchedCount) * 100).toStringAsFixed(0)}%" : "0%";
                         String horrorPct = moviesWatchedCount > 0 ? "${((horrorCount / moviesWatchedCount) * 100).toStringAsFixed(0)}%" : "0%";
                         String romancePct = moviesWatchedCount > 0 ? "${((romanceCount / moviesWatchedCount) * 100).toStringAsFixed(0)}%" : "0%";
@@ -120,7 +116,6 @@ class ProfileScreen extends StatelessWidget {
 
                         return Column(
                           children: [
-                            // Bloco de Estatísticas Numéricas
                             Container(
                               decoration: BoxDecoration(
                                 color: const Color(0xFF2D2D2D),
@@ -147,7 +142,6 @@ class ProfileScreen extends StatelessWidget {
                             
                             const SizedBox(height: 20),
                             
-                            // Bloco dos Gráficos Circulares Dinâmicos
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
