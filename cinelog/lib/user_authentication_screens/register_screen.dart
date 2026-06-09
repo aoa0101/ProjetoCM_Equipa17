@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> _register() async {
     if(_passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("As passwords não coincidem!"))
+        const SnackBar(content: Text("As passwords não são iguais!"))
       );
       return;
     }
@@ -36,14 +36,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: _passwordController.text,
       );
       if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Registo bem sucedido!"))
+        );
         context.go('/');
       }
     } on FirebaseAuthException catch (e) {
-} catch (e) {
-  print(e);
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(e.toString())),
-  );
+      String errorMessage;
+      if (e.code == 'weak-password') {
+        errorMessage = 'A password deve ter pelo menos 6 caracteres.';
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = 'Já existe uma conta para esse email.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'O email fornecido é inválido.';
+      } else {
+        errorMessage = 'Ocorreu um erro: ${e.message}';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage))
+      );
 
     }
   }
