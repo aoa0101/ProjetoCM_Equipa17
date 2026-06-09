@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cinelog/user_authentication_screens/authentication_button.dart';
 import 'package:cinelog/user_authentication_screens/authentication_input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cinelog/color_scheme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,6 +24,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _confirmPasswordController = TextEditingController();
 
   Future<void> _register() async {
+    if(_usernameController.text.isEmpty || _emailController.text.isEmpty || _nameController.text.isEmpty || _passwordController.text.isEmpty || _confirmPasswordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Por favor, preencha todos os campos!"))
+      );
+      return;
+    }
+    
     if(_passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("As passwords não são iguais!"))
@@ -31,10 +38,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final uid = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
+      await uid.user!.updateDisplayName(_nameController.text);
+
+      await FirebaseFirestore.instance.collection('users').doc(uid.user!.uid).set({
+        'username': _usernameController.text,
+        'name': _nameController.text,
+        'email': _emailController.text,
+      });
       if(mounted){
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Registo bem sucedido!"))
@@ -55,7 +69,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(errorMessage))
       );
-
+      
+    }
+    on FirebaseException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Ocorreu um erro: ${e.message}"))
+      );
     }
   }
 

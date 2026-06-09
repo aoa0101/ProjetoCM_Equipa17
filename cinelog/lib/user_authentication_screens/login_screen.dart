@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 20),
 
-                AuthenticationInput(hintText: "Username ou Email", controller: usernameController,),
+                AuthenticationInput(hintText: "Email", controller: usernameController,),
 
                 const SizedBox(height: 15),
 
