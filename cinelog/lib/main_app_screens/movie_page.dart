@@ -1,6 +1,7 @@
 import 'package:cinelog/models/loading.dart';
 import 'package:cinelog/models/movie.dart';
 import 'package:cinelog/services/services.dart';
+import 'package:cinelog/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cinelog/color_scheme.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +15,6 @@ class MoviePage extends StatefulWidget {
   
   @override
   State<StatefulWidget> createState() => MoviePageState();
-
 }
 
 class MoviePageState extends State<MoviePage> {
@@ -23,20 +23,17 @@ class MoviePageState extends State<MoviePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
-      
       body: FutureBuilder(future: ApiService.getMoviePageDetails(movie: widget.movie), 
           builder: (context, asyncSnapshot){
             if (asyncSnapshot.hasData){ 
               return SingleChildScrollView(
-                child: 
-                Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
                     // HEADER
                     Stack(
                       children: [
-
                         Container(
                           width: double.infinity,
                           height: 500,
@@ -46,7 +43,6 @@ class MoviePageState extends State<MoviePage> {
                             fit: BoxFit.cover)
                           ),
                         ),
-
                         Positioned.fill(
                           child: Container(
                             decoration: BoxDecoration(
@@ -61,7 +57,6 @@ class MoviePageState extends State<MoviePage> {
                             ),
                           ),
                         ),
-
                         Positioned(
                           top: 10,
                           left: 10,
@@ -69,13 +64,10 @@ class MoviePageState extends State<MoviePage> {
                             backgroundColor: APPBAR_BACKGROUND_COLOR.withValues(alpha: 0.7),
                             child: IconButton(
                               icon: Icon(Icons.arrow_back, color: SECONDARY_COLOR),
-                              onPressed: () {
-                                context.pop();
-                              },
+                              onPressed: () => context.pop(),
                             ),
                           ),
                         ),
-
                         Positioned(
                           bottom: 20,
                           left: 20,
@@ -99,7 +91,7 @@ class MoviePageState extends State<MoviePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ActionButton(icon: Icons.remove_red_eye, label: "Visto"),
-                        ActionButton(icon: Icons.list, label: "Watchlist"),
+                        ActionButton(icon: Icons.list, label: "Watchlist", movie: widget.movie),
                         ActionButton(icon: Icons.favorite_border, label: "Favorito"),
                       ],
                     ),
@@ -122,7 +114,7 @@ class MoviePageState extends State<MoviePage> {
                           color: SECONDARY_COLOR,
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child:  Text(
+                        child: Text(
                           '${widget.movie.ratingAverage.toStringAsFixed(1)} / 10',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -148,59 +140,50 @@ class MoviePageState extends State<MoviePage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-
                           SizedBox(height: 10),
-
-                          // Diretor
-                            RichText(
-                              text: TextSpan(
-                                style: TextStyle(color: Colors.white70, fontSize: 14),
-                                children: [
-                                  TextSpan(text: "Diretor/Criador: "),
-                                  TextSpan(
-                                    text: widget.movie.director,
-                                    style: TextStyle(color: SECONDARY_COLOR),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            const SizedBox(height: 10),
-
-                            // Género
-                            RichText(
-                              text: TextSpan(
-                                style: TextStyle(color: Colors.white70, fontSize: 14),
-                                children: [
-                                  TextSpan(text: "Género: "),
-                                  TextSpan(
-                                    text: widget.movie.genres.join(", "),
-                                    style: TextStyle(color: SECONDARY_COLOR),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            const SizedBox(height: 10),
-
-                            // Idioma
-                              RichText(
-                                text: TextSpan(
-                                  style: TextStyle(color: Colors.white70, fontSize: 14),
-                                  children: [
-                                    TextSpan(text: "Idioma: "),
-                                    TextSpan(
-                                      text: widget.movie.language,
-                                      style: TextStyle(color: SECONDARY_COLOR),
-                                    ),
-                                  ],
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.white70, fontSize: 14),
+                              children: [
+                                TextSpan(text: "Diretor/Criador: "),
+                                TextSpan(
+                                  text: widget.movie.director,
+                                  style: TextStyle(color: SECONDARY_COLOR),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 10),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.white70, fontSize: 14),
+                              children: [
+                                TextSpan(text: "Género: "),
+                                TextSpan(
+                                  text: widget.movie.genres.join(", "),
+                                  style: TextStyle(color: SECONDARY_COLOR),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.white70, fontSize: 14),
+                              children: [
+                                TextSpan(text: "Idioma: "),
+                                TextSpan(
+                                  text: widget.movie.language,
+                                  style: TextStyle(color: SECONDARY_COLOR),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
-                        MoviePage.sectionSpace,
+                    MoviePage.sectionSpace,
 
                     // NOTES
                     const Padding(
@@ -268,12 +251,10 @@ class MoviePageState extends State<MoviePage> {
           }),
       );
   }
-
 }
 
 List<Widget> _generateStarRating({required Movie movie}){
   num rating = movie.ratingAverage/2;
-
   return List.generate(5,
     (index) {
       if(rating >= index + 1){
@@ -287,21 +268,93 @@ List<Widget> _generateStarRating({required Movie movie}){
   );
 }
 
-class ActionButton extends StatelessWidget {
-   final IconData icon; 
-   final String label; 
-   const ActionButton({ super.key, required this.icon, required this.label, }); 
-   
-   @override Widget build(BuildContext context) { 
-    return Column( children: [ 
-      IconButton(
-        onPressed: () => {},
-        style: IconButton.styleFrom(backgroundColor:  Colors.white10), 
-        icon: Icon(icon, color: SECONDARY_COLOR), 
-        ), 
-        const SizedBox(height: 5), 
-        Text(label, style: const TextStyle(color: Colors.white70)), 
-      ], 
-    ); 
-  } 
+class ActionButton extends StatefulWidget {
+  final IconData icon;
+  final String label;
+  final Movie? movie;
+
+  const ActionButton({
+    super.key,
+    required this.icon,
+    required this.label,
+    this.movie,
+  });
+
+  @override
+  State<ActionButton> createState() => _ActionButtonState();
+}
+
+class _ActionButtonState extends State<ActionButton> {
+  bool _isActive = false;
+  bool _isLoading = false; 
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.label == "Watchlist" && widget.movie != null) {
+      FirestoreService.isInWatchlist(widget.movie!.movieId).then((val) {
+        if (mounted) {
+          setState(() => _isActive = val);
+        }
+      });
+    }
+  }
+
+  void _handleTap() async {
+    if (widget.label != "Watchlist" || widget.movie == null || _isLoading) return;
+
+    final previousState = _isActive;
+
+    setState(() {
+      _isLoading = true;
+      _isActive = !_isActive; 
+    });
+
+    try {
+      if (previousState) {
+        await FirestoreService.removeFromWatchlist(widget.movie!.movieId);
+      } else {
+        await FirestoreService.addToWatchlist(widget.movie!);
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isActive = previousState;
+        });
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao atualizar a Watchlist. Tenta novamente.")),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        IconButton(
+          onPressed: _isLoading ? null : _handleTap, 
+          style: IconButton.styleFrom(
+            backgroundColor: _isActive ? SECONDARY_COLOR.withValues(alpha: 0.3) : Colors.white10,
+          ),
+          icon: _isLoading 
+              ? SizedBox(
+                  width: 24, 
+                  height: 24, 
+                  child: CircularProgressIndicator(strokeWidth: 2, color: SECONDARY_COLOR),
+                )
+              : Icon(
+                  widget.icon,
+                  color: _isActive ? SECONDARY_COLOR : Colors.white70,
+                ),
+        ),
+        const SizedBox(height: 5),
+        Text(widget.label, style: const TextStyle(color: Colors.white70)),
+      ],
+    );
+  }
 }
