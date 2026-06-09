@@ -18,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController usernameController =TextEditingController();
   final TextEditingController passwordController =TextEditingController();
+
   Future<void> _login() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -25,11 +26,24 @@ class _LoginScreenState extends State<LoginScreen> {
         password: passwordController.text,
       );
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Login bem sucedido!"))
+        );
         context.go( '/');
       };
     } on FirebaseAuthException catch (e) {
-       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Erro ao fazer login: ${e.message}"))
+      String errorMessage;
+      if (e.code == 'user-not-found') {
+        errorMessage = 'Nenhum usuário encontrado para esse email.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Senha incorreta para esse email.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'O email fornecido é inválido.';
+      } else {
+        errorMessage = 'Ocorreu um erro: ${e.message}';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage))
       );
     }
   }
