@@ -65,7 +65,6 @@ class SearchScreenState extends State<SearchScreen>{
                             currentFilters['year'] = yearValue;
                             currentFilters['ageRating'] = ageRatingValue;
                             currentFilters['rating'] = ratingValue;
-                            print(ratingValue == 'null');                       
                           });
                         },
                         style: const TextStyle(color: Colors.white),

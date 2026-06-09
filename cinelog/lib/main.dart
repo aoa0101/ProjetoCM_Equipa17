@@ -36,18 +36,20 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/login', 
       builder: (context, state) => const LoginScreen(),
+      pageBuilder: GoTransitions.slide.toRight.withFade.call,
       routes: <RouteBase>[
         GoRoute(
           pageBuilder: GoTransitions.slide.toRight.withFade.call,
           path: 'register', // Fica: /login/register
-          builder: (context, state) => const RegisterScreen()
+          builder: (context, state) => const RegisterScreen(),
         ), 
       ]
     ),
 
     GoRoute(
       path: '/notifications', 
-      builder: (BuildContext context, GoRouterState state) => const NotificationsPage()
+      builder: (BuildContext context, GoRouterState state) => const NotificationsPage(),
+      pageBuilder: GoTransitions.slide.toRight.withFade.call,
     ),
 
     GoRoute(

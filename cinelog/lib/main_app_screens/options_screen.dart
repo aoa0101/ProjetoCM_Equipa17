@@ -25,6 +25,7 @@ class OptionsScreenWidget extends StatelessWidget {
               _makeOptionButton(Icons.lock, "Privacidade"),
               _makeOptionButton(Icons.format_color_fill, "Aparência"),
               _makeOptionButton(null, "Sobre nós", customWidth: 160),
+              Image.asset("lib/images/TMDB_logo_attribution.png"),
             ],
           ),
         ),
