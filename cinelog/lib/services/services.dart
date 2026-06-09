@@ -109,7 +109,9 @@ class ApiService{
     return 0;
   }
   
-  ///This method makes a request to the API
+  ///Fetches the necessary values for the filters used in the search screen.
+  ///
+  ///Returns: a **Map** with the following keys(Strings): genres, languages, certifications, years, ratings. Each key gives as a value a **List** containg the content for the filters.
   static Future getFiltersContent() async{
     Map filtersContent = {};
     final results = await Future.wait([
@@ -126,7 +128,13 @@ class ApiService{
     return filtersContent;
   }
   
+  ///Makes and returns a **List** that contains a **Map** for every year since 1800 with the following keys and values:
   ///
+  ///Key: id(String) : Value: the year as a String
+  ///
+  ///Key: name(String) : Value: the year as a String
+  ///
+  ///Returns: The generated **List**.
   static List _makeYearList(){
     List years = [];
     int minPossibleYear = 1800;
@@ -139,7 +147,13 @@ class ApiService{
     return years;
   }
   
+  ///Makes and returns a **List** that contains 5 **Map**s each with the following Keys and values:
   ///
+  ///Key: id(String) : Value: numbers from 9 to 6 as Strings and <5 as a String
+  ///
+  ///Key: name(String) : Value: numbers from 9 to 6 as Strings and <5 as a String
+  ///
+  ///Returns: The generated **List**.
   static List _makeRatingList(){
     List ratingsList = [];
 
@@ -154,9 +168,11 @@ class ApiService{
     return ratingsList;
   }
   
-  ///This method makes a request to the API
+  ///Fetches the genres names of a movie and returns a **List** containing them.
   ///
-  ///**`movieId`** - 
+  ///**`movieId`** - the id of the movie with the genres to look for.
+  ///
+  ///Returns: The **List** containing the genre names. 
   static Future _getMovieGenres({required int movieId}) async{
     final response = await _makeRequest(url: 'https://api.themoviedb.org/3/movie/$movieId');
 
@@ -171,9 +187,11 @@ class ApiService{
     return genreNames;
   }
   
-  ///This method makes a request to the API
+  ///Fetches the name of the director of a movie and returns it.
   ///
-  ///**`movieId`** -
+  ///**`movieId`** - The movie for which the director has to be found.
+  ///
+  ///Returns: The movie's director name.
   static Future _getMovieDirector({required int movieId}) async{
     final response = await _makeRequest(url: 'https://api.themoviedb.org/3/movie/$movieId/credits');
 
@@ -185,9 +203,19 @@ class ApiService{
 
   }
   
-  ///This method makes a request to the API
+  ///This method makes a request to the API to the **`url`** received as parameter, in case of **status code 22** (no more reponses possible due to last response page being surpassed)
+  ///being returned it returns an empty **List**, otherwise in case of any other **status code besides 200** it raises an **Exception**, in case of status code 
+  ///200 it returns the response by the API.
   ///
-  ///**`url`** - 
+  ///**`url`** - The url to which make the request
+  ///
+  ///Returns: 
+  ///
+  ///In case of Status code 22 - Empty **List**
+  ///
+  ///In case of Status code 200 - API Response
+  ///
+  ///In case of any Status code diferent than 22 or 200 - throws an Exception.
   static Future _makeRequest({required String url}) async{
     final response = await http.get(
       Uri.parse(url),
@@ -202,7 +230,9 @@ class ApiService{
     return response;
   }
     
-  ///This method makes a request to the API
+  ///Fetches the **List** of genres that exist in the API and returns it.
+  ///
+  ///Returns: The **List** with all the genres.
   static Future _getGenres() async{
     final response = await _makeRequest(url: 'https://api.themoviedb.org/3/genre/movie/list');
 
@@ -210,7 +240,16 @@ class ApiService{
     return genres;
   }
   
-  ///This method makes a request to the API
+  ///Fetches the following chosen languages if they exist in the API: 
+  ///"en", "pt", "es", "fr", "de", "it", "ja", "ko", "zh", "hi", "ru", "ar", "tr", "nl".
+  ///Makes a list with the ones found and for each found makes a map with the following Key Value:
+  ///
+  ///Key: id(String) : Value: iso_639_1 given by the API
+  ///
+  ///Key: name(String) : Value: name of the language (it's iso_639_1 value)
+  ///
+  ///
+  ///Returns: A List with the relevant languages found.
   static Future _getLanguages() async{
     final List<String> relevantLanguages = [
       "en",
