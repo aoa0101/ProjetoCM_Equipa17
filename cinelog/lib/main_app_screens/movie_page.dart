@@ -47,7 +47,7 @@ class MoviePageState extends State<MoviePage> {
                       ),
                       Positioned.fill(
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
@@ -295,7 +295,6 @@ class _ActionButtonState extends State<ActionButton> {
     _checkInitialState();
   }
 
-  // Verifica na BD se o filme já está na respetiva coleção ao abrir o ecrã
   void _checkInitialState() async {
     if (widget.movie == null) return;
     
@@ -329,18 +328,36 @@ class _ActionButtonState extends State<ActionButton> {
           await FirestoreService.removeFromWatchlist(widget.movie!.movieId);
         } else {
           await FirestoreService.addToWatchlist(widget.movie!);
+          
+          // O CÓDIGO CAI AQUI PARA A WATCHLIST:
+          await FirestoreService.generateNotification(
+            "Filme na Watchlist! 📌",
+            "Não te esqueças de ver '${widget.movie!.title}' mais tarde!",
+          );
         }
       } else if (widget.label == "Favorito") {
         if (previousState) {
           await FirestoreService.removeFromFavorites(widget.movie!.movieId);
         } else {
           await FirestoreService.addToFavorites(widget.movie!);
+          
+          // APROVEITAMOS E ADICIONAMOS TAMBÉM SE FOR FAVORITO:
+          await FirestoreService.generateNotification(
+            "Novo Favorito! ❤️",
+            "Adicionaste '${widget.movie!.title}' aos teus filmes favoritos.",
+          );
         }
       } else if (widget.label == "Visto") {
         if (previousState) {
           await FirestoreService.removeFromWatched(widget.movie!.movieId);
         } else {
           await FirestoreService.addToWatched(widget.movie!);
+          
+          // E TAMBÉM SE FOR ADICIONADO AOS VISTOS:
+          await FirestoreService.generateNotification(
+            "Mais um para a conta! 🍿",
+            "Marcaste '${widget.movie!.title}' como visto.",
+          );
         }
       }
     } catch (e) {
@@ -361,7 +378,6 @@ class _ActionButtonState extends State<ActionButton> {
 
   @override
   Widget build(BuildContext context) {
-    // Muda dinamicamente o ícone do coração se estiver ativo
     IconData displayIcon = widget.icon;
     if (widget.label == "Favorito") {
       displayIcon = _isActive ? Icons.favorite : Icons.favorite_border;

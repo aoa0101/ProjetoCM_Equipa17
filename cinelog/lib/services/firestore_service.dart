@@ -138,7 +138,7 @@ class FirestoreService {
         .get();
     return doc.exists;
   }
-  
+
   static Stream<DocumentSnapshot<Map<String, dynamic>>> getUserProfileStream() {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -147,4 +147,56 @@ class FirestoreService {
     return FirebaseFirestore.instance.collection('users').doc(user.uid).snapshots();
   }
 
+  static Future<void> generateNotification(String title, String description) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) return;
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .collection('notifications')
+          .add({
+        'title': title,
+        'description': description,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      print("Erro ao gerar notificação: $e");
+    }
+  }
+
+  static Future<void> triggerWatchlistReminder() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) return;
+
+    try {
+      final watchlistSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .collection('watchlist')
+          .get();
+
+      if (watchlistSnapshot.docs.isNotEmpty) {
+        final docs = watchlistSnapshot.docs;
+        docs.shuffle(); 
+        final randomMovieDoc = docs.first;
+        
+        var movieData = randomMovieDoc.data();
+        String movieTitle = movieData['title'] ?? 'um filme da tua lista';
+
+        await generateNotification(
+          "O que vais ver hoje? 🍿",
+          "Ainda tens '$movieTitle' na tua Watchlist. Que tal aproveitares hoje para o ver?",
+        );
+      } else {
+        await generateNotification(
+          "Watchlist vazia! 🎬",
+          "Não tens nenhum filme pendente. Explora o catálogo e adiciona novos filmes!",
+        );
+      }
+    } catch (e) {
+      print("Erro ao gerar lembrete de watchlist: $e");
+    }
+  }
 }
