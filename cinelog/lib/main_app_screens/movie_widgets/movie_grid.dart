@@ -5,6 +5,8 @@ import 'package:cinelog/models/movie.dart';
 import 'package:cinelog/services/services.dart';
 import 'package:flutter/material.dart';
 
+///This widget displays a grid of MovieCards
+///
 class MovieGrid extends StatefulWidget {
   final bool neverScrollable;
   final String? searchQuery;
@@ -63,7 +65,7 @@ class MovieGridState extends State<MovieGrid> {
       isLoading = false;     
     });
   }
-
+  
   void _loadNextPage() async{
     if (isLoading) return;
 
