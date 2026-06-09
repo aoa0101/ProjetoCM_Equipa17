@@ -32,6 +32,31 @@ class Movie{
     );
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'movieId': movieId,
+      'title': title,
+      'description': description,
+      'imgPath': imgPath,
+      'ratingAverage': ratingAverage,
+      'language': language,
+      'genres': genres,
+      'director': director,
+    };
+  }
+
+  factory Movie.fromFirestore(Map<String, dynamic> data) {
+    return Movie(
+      movieId: data['movieId'] as int,
+      title: data['title'] as String,
+      description: data['description'] as String,
+      imgPath: data['imgPath'] as String,
+      ratingAverage: (data['ratingAverage'] as num).toDouble(),
+      language: data['language'] as String,
+      genres: data['genres'] ?? ['Não disponível'],
+      director: data['director'] ?? 'Não disponível',
+    );
+  }
   @override
   String toString() {
     return "Movie(id:$movieId,\n title: $title,\n description: $description,\n imgPath: $imgPath,\n ratingAverage: $ratingAverage\n)";
