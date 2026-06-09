@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cinelog/models/loading.dart';
 import 'package:cinelog/models/movie.dart';
 import 'package:cinelog/services/services.dart';
@@ -18,6 +20,7 @@ class MoviePage extends StatefulWidget {
 }
 
 class MoviePageState extends State<MoviePage> {
+  final GlobalKey<ActionButtonState> seenKey = GlobalKey();
   final TextEditingController _notesController = TextEditingController();
   bool _isSavingNote = false;
 
@@ -145,9 +148,11 @@ class MoviePageState extends State<MoviePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ActionButton(icon: Icons.remove_red_eye, label: "Visto", movie: widget.movie),
+                      ActionButton(key: seenKey , icon: Icons.remove_red_eye, label: "Visto", movie: widget.movie),
                       ActionButton(icon: Icons.list, label: "Watchlist", movie: widget.movie),
-                      ActionButton(icon: Icons.favorite_border, label: "Favorito", movie: widget.movie),
+                      ActionButton(icon: Icons.favorite_border, label: "Favorito", movie: widget.movie, onSeenChanged: (value) {
+                        seenKey.currentState?.setSeen(value);
+                      },),
                     ],
                   ),
 
@@ -361,27 +366,37 @@ class ActionButton extends StatefulWidget {
   final IconData icon;
   final String label;
   final Movie? movie;
-
+  final ActionButton? seenButton;
+  final Function(bool)? onSeenChanged;
   const ActionButton({
     super.key,
     required this.icon,
     required this.label,
     this.movie,
+    this.seenButton,
+    this.onSeenChanged
   });
 
   @override
-  State<ActionButton> createState() => _ActionButtonState();
+  State<ActionButton> createState() => ActionButtonState();
 }
 
-class _ActionButtonState extends State<ActionButton> {
+class ActionButtonState extends State<ActionButton> {
   bool _isActive = false;
   bool _isLoading = false; 
+
 
   @override
   void initState() {
     super.initState();
     _checkInitialState();
   }
+
+    void setSeen(bool value) {
+      setState(() {
+        _isActive = value;
+      });
+    }
 
   void _checkInitialState() async {
     if (widget.movie == null) return;
@@ -406,8 +421,8 @@ class _ActionButtonState extends State<ActionButton> {
     final previousState = _isActive;
 
     setState(() {
-      _isLoading = true;
-      _isActive = !_isActive; 
+      _isLoading = true; 
+      _isActive = !_isActive;
     });
 
     try {
@@ -425,6 +440,10 @@ class _ActionButtonState extends State<ActionButton> {
         if (previousState) {
           await FirestoreService.removeFromFavorites(widget.movie!.movieId);
         } else {
+          if(widget.onSeenChanged != null){ 
+            widget.onSeenChanged!.call(true);
+          }
+          await FirestoreService.addToWatched(widget.movie!);
           await FirestoreService.addToFavorites(widget.movie!);
           await FirestoreService.generateNotification(
             "Novo Favorito! ❤️",
